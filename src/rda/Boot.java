@@ -9,11 +9,12 @@ public class Boot {
 
     public static void main(String[] args) {
         Node<Integer> integerNode = create(32);
-        Node clone = NodeUtils.clone(integerNode);
+//        Node clone = NodeUtils.clone(integerNode);
+        Node clone = NodeClone.clone(integerNode);
         while (integerNode != null) {
 
-            assert integerNode.getValue() == clone.getValue();
-            assert integerNode.getRandom().getValue() == clone.getRandom().getValue();
+            assert integerNode.getValue().equals(clone.getValue());
+            assert integerNode.getRandom().getValue().equals(clone.getRandom().getValue());
 
             System.out.println(
                     integerNode.toJsonWithRandomValue() + '/' +

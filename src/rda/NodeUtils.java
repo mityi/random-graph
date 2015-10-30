@@ -10,6 +10,11 @@ import java.util.Map;
 
 public class NodeUtils {
 
+    /**
+     * All data put to buffers
+     * @param node
+     * @return
+     */
     public static Node clone(Node node) {
         Map<Node, List<Node>> bufferContains = new HashMap<>();
         Map<Node, Node> buffer = new HashMap<>();
@@ -28,6 +33,7 @@ public class NodeUtils {
         }
 
         buffer.keySet().forEach(origin -> {
+            //We can
             Node copy = buffer.get(origin);
             List<Node> randomContains = bufferContains.get(origin);
             if (randomContains != null) {
