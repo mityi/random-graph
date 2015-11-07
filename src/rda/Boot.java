@@ -9,8 +9,8 @@ public class Boot {
 
     public static void main(String[] args) {
         Node<Integer> integerNode = create(32);
-//        Node clone = NodeUtils.clone(integerNode);
-        Node clone = NodeClone.clone(integerNode);
+        Node clone = NodeUtils.clone(integerNode);
+//        Node clone = NodeClone.clone(integerNode);
         while (integerNode != null) {
 
             assert integerNode.getValue().equals(clone.getValue());

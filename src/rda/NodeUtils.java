@@ -3,56 +3,40 @@ package rda;
 
 import rda.model.Node;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 public class NodeUtils {
 
     /**
-     * All data put to buffers
      * @param node
      * @return
      */
     public static Node clone(Node node) {
-        Map<Node, List<Node>> bufferContains = new HashMap<>();
-        Map<Node, Node> buffer = new HashMap<>();
-
-        Node newNode = new Node(node.getValue());
-        putToBuffers(node, newNode, bufferContains, buffer);
-        node = node.getNext();
-
-        Node newHead = newNode;
-
+        Node startNode = node;
         while (node != null) {
-            newNode.setNext(new Node(node.getValue()));
-            newNode = newNode.getNext();
-            putToBuffers(node, newNode, bufferContains, buffer);
-            node = node.getNext();
+            Node newNode = new Node(node.getValue());
+            newNode.setNext(node.getNext());
+            node.setNext(newNode);
+            node = newNode.getNext();
+        }
+        node = startNode;
+        while (node != null) {
+            Node newNode = node.getNext();
+            newNode.setRandom(node.getRandom().getNext());
+            node = newNode.getNext();
+        }
+        node = startNode;
+        Node newHead = node.getNext();
+        while (node != null) {
+            Node newNode = node.getNext();
+            Node oldNode = node;
+            node = newNode.getNext();
+            oldNode.setNext(node);
+            if (node != null) {
+                newNode.setNext(node.getNext());
+            }
         }
 
-        buffer.keySet().forEach(origin -> {
-            //We can
-            Node copy = buffer.get(origin);
-            List<Node> randomContains = bufferContains.get(origin);
-            if (randomContains != null) {
-                randomContains.forEach(contains -> contains.setRandom(copy));
-            }
-        });
         return newHead;
 
     }
 
-    private static void putToBuffers(Node node, Node newNode,
-                                     Map<Node, List<Node>> bufferContains, Map<Node, Node> buffer) {
-        if (node.getRandom() != null) {
-            if (!bufferContains.containsKey(node.getRandom())) {
-                bufferContains.put(node.getRandom(), new LinkedList<>());
-            }
-            bufferContains.get(node.getRandom()).add(newNode);
-        }
-
-        buffer.put(node, newNode);
-    }
 }
